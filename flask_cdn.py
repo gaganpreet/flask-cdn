@@ -29,9 +29,12 @@ def url_for(endpoint, **values):
         if cdn_https is True or (cdn_https is None and request.is_secure):
             scheme = 'https'
 
-        static_folder = app.static_folder
+        static_folder = None
         if request.blueprint is not None:
             static_folder = app.blueprints[request.blueprint].static_folder
+        if static_folder is None:
+            static_folder = app.static_folder
+
 
         urls = app.url_map.bind(app.config['CDN_DOMAIN'], url_scheme=scheme)
 
